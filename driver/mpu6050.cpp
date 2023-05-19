@@ -1,7 +1,7 @@
 #include<WiringPi.h>
 #include<wiringPiI2C.h>
 
-#deifine _USE_MATH_DEFINES 
+#define _USE_MATH_DEFINES 
 
 #include <stdlib.h> 
 #include <stdio.h>
@@ -28,7 +28,7 @@
 
 
 
-int16_t accX, accY, accZ, gyroX, gyroY, filltacc0, filtacc2, filtacc1 ;
+int16_t accX, accY, accZ, gyroX, gyroY, gyroZ, filtacc, filtacc0, filtacc2, filtacc1 ;
 float acc_angle[2];
 float gyro_angle[2];
 float tot_angle[2];
@@ -55,9 +55,9 @@ void update() {
  time = millis() ;
  elapsedtime = (time - timeprev) / 1000 ; 
 //// accelerometer raw data //////////////////////////////////
-accX = read_raw_data(ACCEL_XOUT_H)
-accY = read_raw_data(ACCEL_YOUT_H)
-accZ = read_raw_data(ACCEL_ZOUT_H)
+accX = read_raw_data(ACCEL_XOUT_H);
+accY = read_raw_data(ACCEL_YOUT_H);
+accZ = read_raw_data(ACCEL_ZOUT_H);
 
 ////accelerometer X///////////
   acc_angle[0] = atan2((accY/16384.0)/sqrt(pow((accX/16384.0),2) + pow((accZ/16384.0),2)))*conv ;
@@ -68,9 +68,9 @@ accZ = read_raw_data(ACCEL_ZOUT_H)
   filtacc2 = 0.9*filtacc1 + 0.1* acc_angle[1] ;
 
 /// GYRO RAW DATA /////  
-gyroX = read_raw_data(GYRO_XOUT_H) 
-gyroY = read_raw_data(GYRO_YOUT_H)
-gyroZ = read_raw_data(GYRO_ZOUT_H)
+gyroX = read_raw_data(GYRO_XOUT_H);
+gyroY = read_raw_data(GYRO_YOUT_H);
+gyroZ = read_raw_data(GYRO_ZOUT_H);
 ///GYRO  X///////////
   gyro_angle[0]=gyroX/131.0;
 ////GYRO  Y//////////
@@ -85,7 +85,7 @@ tot_angle[0]=0.96*(tot_angle[0] + gyro_angle[0]*elapsedtime) + 0.04* filtacc0 ;
 /*---Y axis angle---*/
 tot_angle[1]=0.96*(tot_angle[1] + gyro_angle[1]*elapsedtime) + 0.04* filtacc2 ;
 /*---Z axis angle---*/
-tot_angle[2] =  gyro_angle[2] 
+tot_angle[2] =  gyro_angle[2] ;
 }
 
 void init_MPU () {
